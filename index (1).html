@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Did you miss me? 🥺</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#2b1620;
+    --bg-deep2:#4a2438;
+    --card:#fff6ef;
+    --card-edge:#f1ddc9;
+    --gold:#d8a657;
+    --gold-dim:#b98a44;
+    --rose:#c97b84;
+    --rose-soft:#e7b9bf;
+    --text-dark:#3a2430;
+    --text-muted:#7a5a63;
+    --text-light:#fbefe6;
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    width:100%;
+    overflow-x:hidden;
+  }
+
+  body{
+    font-family:'Manrope',sans-serif;
+    background:
+      radial-gradient(1200px 800px at 15% 10%, rgba(216,166,87,0.10), transparent 60%),
+      radial-gradient(1000px 700px at 85% 90%, rgba(201,123,132,0.14), transparent 60%),
+      linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-deep2) 55%, #3a1e2c 100%);
+    color:var(--text-light);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    transition:opacity 1.2s ease;
+    padding:24px;
+  }
+
+  /* Ambient drifting petals — the signature element */
+  .petal-field{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+  }
+  .petal{
+    position:absolute;
+    top:-40px;
+    opacity:0.55;
+    animation-name:drift;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    filter:drop-shadow(0 0 6px rgba(216,166,87,0.15));
+  }
+  @keyframes drift{
+    0%{ transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.55; }
+    90%{ opacity:0.45; }
+    100%{ transform:translateY(110vh) translateX(var(--drift-x,40px)) rotate(340deg); opacity:0; }
+  }
+
+  #music{
+    position:fixed;
+    top:18px;
+    right:18px;
+    z-index:5;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:1px solid rgba(251,239,230,0.25);
+    background:rgba(255,255,255,0.06);
+    color:var(--text-light);
+    font-size:18px;
+    cursor:pointer;
+    backdrop-filter:blur(6px);
+    transition:transform .2s ease, background .2s ease;
+  }
+  #music:hover{ transform:scale(1.08); background:rgba(255,255,255,0.12); }
+
+  #app{
+    position:relative;
+    z-index:2;
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+
+  .card{
+    position:relative;
+    background:var(--card);
+    color:var(--text-dark);
+    border:1px solid var(--card-edge);
+    border-radius:22px;
+    padding:44px 38px 38px;
+    max-width:460px;
+    width:100%;
+    text-align:center;
+    box-shadow:
+      0 30px 60px -20px rgba(20,8,14,0.55),
+      0 0 0 1px rgba(255,255,255,0.02) inset;
+    animation:riseIn .5s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes riseIn{
+    from{ opacity:0; transform:translateY(18px) scale(.98); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:14px; left:50%;
+    transform:translateX(-50%);
+    width:52px; height:3px;
+    border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--rose));
+  }
+
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(1.6rem, 5vw, 2.1rem);
+    line-height:1.25;
+    margin:14px 0 26px;
+    color:var(--text-dark);
+  }
+  h2{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.25rem, 4vw, 1.55rem);
+    line-height:1.35;
+    margin:10px 0 26px;
+    color:var(--text-dark);
+  }
+
+  button{
+    font-family:'Manrope',sans-serif;
+    font-size:0.98rem;
+    cursor:pointer;
+  }
+
+  .opt{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fff;
+    border:1.5px solid var(--card-edge);
+    color:var(--text-dark);
+    border-radius:14px;
+    padding:13px 18px;
+    margin:9px 0;
+    font-weight:500;
+    transition:border-color .18s ease, transform .12s ease, background .18s ease;
+  }
+  .opt:hover{
+    border-color:var(--rose-soft);
+    transform:translateX(2px);
+  }
+  .opt.sel{
+    background:linear-gradient(90deg, rgba(216,166,87,0.14), rgba(201,123,132,0.14));
+    border-color:var(--gold);
+    font-weight:700;
+  }
+
+  .primary{
+    display:inline-block;
+    margin-top:22px;
+    background:linear-gradient(90deg, var(--gold), var(--rose));
+    color:#2c1620;
+    border:none;
+    border-radius:999px;
+    padding:13px 30px;
+    font-weight:700;
+    letter-spacing:.2px;
+    box-shadow:0 10px 22px -8px rgba(201,123,132,0.55);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 26px -8px rgba(201,123,132,0.65);
+  }
+
+  #no{
+    font-family:'Manrope',sans-serif;
+    font-weight:600;
+    color:var(--text-muted);
+    box-shadow:0 6px 14px -6px rgba(0,0,0,0.25);
+  }
+
+  .range{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:8px 0 6px;
+    font-size:1.4rem;
+  }
+  .range span{ flex-shrink:0; }
+  input[type=range]{
+    -webkit-appearance:none;
+    height:6px;
+    border-radius:4px;
+    background:linear-gradient(90deg, var(--gold), var(--rose));
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:22px; height:22px;
+    border-radius:50%;
+    background:#fff;
+    border:3px solid var(--rose);
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,0.3);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:22px; height:22px;
+    border-radius:50%;
+    background:#fff;
+    border:3px solid var(--rose);
+    cursor:pointer;
+  }
+  #pct{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.6rem;
+    color:var(--rose);
+    margin-bottom:8px;
+  }
+
+  p{
+    color:var(--text-muted);
+    font-size:1.02rem;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .petal{ animation:none; display:none; }
+    .card{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+  <audio id="bg" loop preload="none"></audio>
+  <button id="music" title="Toggle music">🔇</button>
+
+  <div class="petal-field" id="petalField"></div>
+
+  <div id="app"></div>
+
+<script>
+// Ambient petal generator — purely decorative, respects reduced motion
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const field = document.getElementById('petalField');
+  const glyphs = ['🌸','🥀','✨'];
+  const count = window.innerWidth < 600 ? 8 : 14;
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    el.className='petal';
+    el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.fontSize = (12 + Math.random()*14) + 'px';
+    el.style.setProperty('--drift-x', (Math.random()*80-40) + 'px');
+    el.style.animationDuration = (14 + Math.random()*14) + 's';
+    el.style.animationDelay = (Math.random()*-20) + 's';
+    field.appendChild(el);
+  }
+})();
+</script>
+
+<script>
+const bg=document.getElementById('bg');let playing=false;
+music.onclick=async()=>{try{if(!playing){await bg.play();music.textContent='🔊';playing=true;}else{bg.pause();music.textContent='🔇';playing=false;}}catch(e){alert('Tap again if autoplay is blocked.');}};
+
+const app=document.getElementById('app');
+
+// Object to store the responses
+const responses = {
+    missed: "Yes"
+};
+
+// URL of your Google Apps Script Web App
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUsKI304fxPpQEasJALdebeFUioRK_2GJyyfiDk6-euH0bj02qhFRmsDecicIZAruj/exec";
+
+function sendData() {
+    // Send data as a query string (GET) or JSON (POST). 
+    // Using fetch with NO-CORS mode since Google Apps Script redirects can sometimes trigger CORS errors in simple setups.
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(responses)
+    }).catch(err => console.error("Error sending data:", err));
+}
+
+function q(t,o,n, key){
+    app.innerHTML=`<div class=card><h2>${t}</h2>${o.map(x=>`<button class='opt'>${x}</button>`).join('')}<button id=nx class='primary' style='display:none'>Next ➜</button></div>`;
+    let b=[...document.querySelectorAll('.opt')];
+    let selectedValue = "";
+    b.forEach(x=>x.onclick=()=>{
+        b.forEach(y=>y.classList.remove('sel'));
+        x.classList.add('sel');
+        selectedValue = x.textContent;
+        nx.style.display='block';
+    });
+    nx.onclick=()=>{
+        responses[key] = selectedValue; // Save the answer
+        n();
+    };
+}
+
+function s(t,l,r,n, key){
+    app.innerHTML=`<div class=card><h2>${t}</h2><div id=pct>50%</div><div class=range><span>${l}</span><input id=rg type=range min=0 max=100 value=50 style='flex:1'><span>${r}</span></div><button class='primary' id=nx>Next ➜</button></div>`;
+    rg.oninput=()=>pct.textContent=rg.value+'%';
+    nx.onclick=()=>{
+        responses[key] = rg.value + '%'; // Save the slider answer
+        n();
+    };
+}
+
+function end(){
+    app.innerHTML="<div class='card'><h2>That's everything I wanted to know. 😉</h2><p>Saving responses... 🌸</p></div>";
+    
+    // Trigger the data sending
+    sendData();
+
+    setTimeout(()=>{
+        app.innerHTML="<div class='card'><h2>That's everything I wanted to know. 😉</h2><p>Take care. 🌸</p></div>";
+        setTimeout(()=>document.body.style.opacity='0', 1500);
+    }, 1500);
+}
+
+function p7(){s("Energy level today 🔋","🪫","🔋",end, "energy")}
+function p6(){s("How much do you miss me? 🥺","🥺","😭",p7, "how_much_missed")}
+function p5(){q("Did you eat properly? 🍽️",["😋 Ate really well!","🙂 Ate decently","🍔 Junk food day","🥲 Forgot to eat enough"],p6, "ate_properly")}
+function p4(){q("What made you smile today? 😊",["🍕 Good food","🐶 A cute animal","😂 A funny meme","🌅 A beautiful moment","💭 Thinking of you","😔 Not much today"],p5, "smile_reason")}
+function p3(){q("What did you do mostly today? 🌸",["📚 Learning new stuff","📖 Reading novels","📱 Doom scrolling","🍳 Cooking","🧹 House chores","🎬 Watching movies","🎧 Listening to music"],p4, "primary_activity")}
+function p2(){q("How are you feeling today? 💖",["✨ Amazing","😊 Good","😌 Okay","😴 Tired","😣 Stressed","😢 Sad"],p3, "feeling")}
+
+function start(){
+    app.innerHTML="<div class='card'><h1>Did you miss me? 🥺</h1><button class='primary' id='yes'>Yes ❤️</button><button id='no' style='position:absolute;left:58%;top:62%;width:110px;background:#ddd;border:none;border-radius:999px;padding:13px 18px;transition:left .22s ease,top .22s ease;'>No 🙄</button></div>";
+    const no=document.getElementById('no');
+
+    function moveNo(){
+     const pad=20;
+     const maxX=window.innerWidth-no.offsetWidth-pad;
+     const maxY=window.innerHeight-no.offsetHeight-pad;
+     no.style.position='fixed';
+     no.style.left=(Math.random()*maxX)+'px';
+     no.style.top=(Math.random()*maxY)+'px';
+    }
+
+    no.addEventListener('mouseenter',moveNo);
+    no.addEventListener('mousemove',moveNo);
+    no.addEventListener('touchstart',function(e){e.preventDefault();moveNo();});
+    no.addEventListener('click',function(e){e.preventDefault();moveNo();});
+
+    yes.onclick=()=>p2();
+}
+start();
+</script>
+</body>
+</html>
